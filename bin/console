@@ -2,6 +2,16 @@
 
 require "bundler/setup"
 require "surfguru"
+require 'pry'
+require 'nokogiri'
+require 'open-uri'
+require 'require_all'
+require 'colorize'
+
+require_relative '../lib/surfguru/version.rb'
+require_relative '../lib/cli.rb'
+require_relative '../lib/beach.rb'
+require_relative '../lib/scraper.rb'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
