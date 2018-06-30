@@ -14,6 +14,33 @@ class CLI
   # https://www.surfline.com/surf-reports-forecasts-cams#south-america
   continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "All"]
 
+  def surf
+    puts "  "
+    puts " Welcome to SurfGuru "
+    puts " your guide to surfing the world "
+    puts "  "
+    list_continents
+  end
+
+  def list_continents
+    puts "Where would you like to surf? (Enter number or exit)"
+    continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
+    puts "  "
+    select_continent
+  end
+
+  def select_continent
+    case user_input = gets.chomp
+    when "exit"
+      puts "Catch you on the next wave!"
+      exit
+    when "1", "2", "3", "4", "5", "6", "7"
+      list_beaches(user_input)
+    else
+      puts "Invalid entry. Please try again".colorize(:red)
+      puts "  "
+      list_continents
+  end
 
 
 
