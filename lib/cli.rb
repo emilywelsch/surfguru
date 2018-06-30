@@ -12,17 +12,18 @@ class CLI
   # https://www.surfline.com/surf-reports-forecasts-cams#north-america
   # https://www.surfline.com/surf-reports-forecasts-cams#oceania
   # https://www.surfline.com/surf-reports-forecasts-cams#south-america
-  continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "All"]
+  continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "Everywhere"]
 
   def surf
     puts "  "
-    puts " Welcome to SurfGuru "
-    puts " your guide to surfing the world "
+    puts "Welcome to SurfGuru "
+    puts "your guide to surfing the world "
     puts "  "
     list_continents
   end
 
   def list_continents
+    continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "Everywhere"]
     puts "Where would you like to surf? (Enter number or exit)"
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
@@ -40,6 +41,7 @@ class CLI
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
       list_continents
+    end
   end
 
 
