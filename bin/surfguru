@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative '../bin/environment'
+require_relative '../config/environment.rb'
 
 CLI.new.surf
