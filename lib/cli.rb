@@ -16,15 +16,15 @@ class CLI
 
   def surf
     puts "  "
-    puts "Welcome to SurfGuru "
-    puts "your guide to surfing the world "
+    puts ">>>>---------------- ·÷±‡± Welcome to SurfGuru ±‡±÷· ---------------->".colorize(:blue)
+    puts "                     your guide to surfing the world "
     puts "  "
     list_continents
   end
 
   def list_continents
-    continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "Everywhere"]
-    puts "Where would you like to surf? (Enter number or exit)"
+    continents = Scraper.scrape_continents
+    puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
     select_continent
@@ -33,10 +33,10 @@ class CLI
   def select_continent
     case user_input = gets.chomp
     when "exit"
-      puts "Catch you on the next wave!"
+      puts "Catch you on the next wave!".colorize(:blue)
       exit
-    when "1", "2", "3", "4", "5", "6", "7"
-      list_beaches(user_input)
+    when user_input.to_i.between?(1,continents.size)
+      list_countries
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
@@ -44,7 +44,70 @@ class CLI
     end
   end
 
+  def list_countries
+    countries = Scraper.scrape_countries
+    puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
+    countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
+    puts "  "
+    select_country
+  end
 
+  def select_country
+    case user_input = gets.chomp
+    when "go back"
+      list_continents
+    when "exit"
+      puts "Catch you on the next wave!".colorize(:blue)
+      exit
+    when user_input.to_i.between?(1,countries.size)
+      list_beaches
+    else
+      puts "Invalid entry. Please try again".colorize(:red)
+      puts "  "
+      list_countries
+    end
+  end
+
+  def list_beaches
+    beaches = Scraper.scrape_beaches
+    puts "Select Beach: (Enter number, go back, or exit)".colorize(:blue)
+    beaches.each.with_index(1) { |beach, i| puts "#{i}. #{beach}" }
+    puts "  "
+    select_beach
+  end
+
+  def select_beach
+    case user_input = gets.chomp
+    when "go back"
+      list_countries
+    when "exit"
+      puts "Catch you on the next wave!".colorize(:blue)
+      exit
+    when user_input.to_i.between?(1,beaches.size)
+      list_beach_details
+    else
+      puts "Invalid entry. Please try again".colorize(:red)
+      puts "  "
+      list_beaches
+    end
+  end
+
+  def list_beach_details
+    # Scraper.scrape_beach_details
+    puts "Beach details will go here."
+  end
+
+  def surf_again?
+    puts "Want to surf again? (Enter yes or no)"
+    user_input = gets.chomp
+    if user_input == "yes"
+      list_continents
+    elsif user_input == "no"
+      exit
+    else
+      puts "Sorry, I didn't understand that entry.".colorize(:red)
+      surf_again?        
+  end
 
 
 
