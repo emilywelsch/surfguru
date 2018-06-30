@@ -35,7 +35,7 @@ class CLI
     when "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    when user_input.to_i.between?(1,continents.size)
+    when user_input.to_i.between?(1, Scraper.scrape_continents.size)
       list_countries
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -59,7 +59,7 @@ class CLI
     when "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    when user_input.to_i.between?(1,countries.size)
+    when user_input.to_i.between?(1,Scraper.scrape_countries.size)
       list_beaches
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -83,7 +83,7 @@ class CLI
     when "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    when user_input.to_i.between?(1,beaches.size)
+    when user_input.to_i.between?(1,Scraper.scrape_beaches.size)
       list_beach_details
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -106,7 +106,8 @@ class CLI
       exit
     else
       puts "Sorry, I didn't understand that entry.".colorize(:red)
-      surf_again?        
+      surf_again?
+    end
   end
 
 
