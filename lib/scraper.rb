@@ -47,13 +47,12 @@ class Scraper
     beaches_page = "https://www.surfline.com/" + country_beaches_slug #this will come as the variable to the method
     doc = Nokogiri::HTML(open(beaches_page))
     doc.css('div.sl-spot-list__ref').each do |beach|
-      binding.pry
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-      beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text #yields wind value
+      beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      beach_details[:beach_url] = beach.css('a').attr('href').value
+      # beach_details[:beach_url] = beach.css('a').attribute('href').value
       beaches << beach_details
     end
     beaches
