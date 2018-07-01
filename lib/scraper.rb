@@ -8,13 +8,11 @@ require_relative '../lib/cli.rb'
 class Scraper
 
   def self.scrape_continents
-    continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "Everywhere"]
-    continents
-    # continents = []
-    #   doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/"))
-    #   binding.pry
-    #   continent.name = doc.search('a').attr('data-reactid').text.strip
-    #   continents << continent
+    # continents = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America", "Everywhere"]
+    # continents
+      doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/"))
+      str = doc.search('div.quiver-world-taxonomy__continents').text.split /(?=[A-Z])/
+      continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7]]
   end
 
   def self.scrape_countries
