@@ -41,18 +41,19 @@ class Scraper
   def self.scrape_beaches#(country_beaches_slug)
     # beaches = ["Annaba", "Decaplage", "Plage Mandjane", "Pipeline", "Chia"]
     # beaches
+
     beaches = []
-    # beaches_page = "https://www.surfline.com/surf-reports-forecasts-cams" + country_beaches_slug
-    # doc = Nokogiri::HTML(open(country_page))
-    doc = Nokogiri::HTML(open('https://www.surfline.com/surf-reports-forecasts-cams/algeria/2589581'))
-    binding.pry
-    doc.css('div.sl-spot-list-item__container').each do |beach|
+    country_beaches_slug = "surf-reports-forecasts-cams/algeria/2589581"
+    beaches_page = "https://www.surfline.com/" + country_beaches_slug #this will come as the variable to the method
+    doc = Nokogiri::HTML(open(beaches_page))
+    doc.css('div.sl-spot-list__ref').each do |beach|
+      binding.pry
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-      beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text
+      beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text #yields wind value
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      beach_details[:url] = beach.css('a').attr('href').value
+      beach_details[:beach_url] = beach.css('a').attr('href').value
       beaches << beach_details
     end
     beaches
