@@ -41,7 +41,6 @@ class Scraper
   def self.scrape_beaches#(country_beaches_slug)
     # beaches = ["Annaba", "Decaplage", "Plage Mandjane", "Pipeline", "Chia"]
     # beaches
-
     beaches = []
     country_beaches_slug = "surf-reports-forecasts-cams/algeria/2589581"
     beaches_page = "https://www.surfline.com/" + country_beaches_slug #this will come as the variable to the method
@@ -52,15 +51,29 @@ class Scraper
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
       beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      # beach_details[:beach_url] = beach.css('a').attribute('href').value
+      # beach_details[:beach_url] = beach.css('a').attribute('href').value          # nokogiri error message!
       beaches << beach_details
     end
     beaches
   end
 
-  def self.scrape_beach_details
-    beach_details = {:surf_height=>"flat", :wind=>"23 kts", :swell=>"1-2 ft"}
-    beach_details
+  def self.scrape_beach_details#(beach_slug)
+    # beach_details = {:surf_height=>"flat", :wind=>"23 kts", :swell=>"1-2 ft"}
+    # beach_details
+    beach_details = []
+    beach_slug = "surf-report/decaplage/584204214e65fad6a7709ce3"
+    beach_page = "https://www.surfline.com/" + beach_slug #this will come as the variable to the method
+    doc = Nokogiri::HTML(open(beach_page))
+      doc.css('div.sl-spot-report').each do |beach|
+        beach_details = {}
+        beach_details[:name] = beach.css('h3.sl-spot-details__name').text
+        beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
+        beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
+        beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
+        # beach_details[:beach_url] = beach.css('a').attribute('href').value          # nokogiri error message!
+        beaches << beach_details
+      end
+      beaches
     # name
     # surf height
     # wind (kts)
