@@ -8,16 +8,34 @@ require_relative '../lib/cli.rb'
 class Scraper
 
   def self.scrape_continents
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/"))
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
     str = doc.search('div.quiver-world-taxonomy__continents').text.split /(?=[A-Z])/
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7], "Everywhere"]
   end
 
-  def self.scrape_countries
+  def self.scrape_countries#(country_slug)
     # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
     # countries
-    countries = []
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/"))
+
+    # https://www.surfline.com/surf-reports-forecasts-cams
+    # https://www.surfline.com/surf-reports-forecasts-cams#africa
+    # https://www.surfline.com/surf-reports-forecasts-cams#asia
+    # https://www.surfline.com/surf-reports-forecasts-cams#europe
+    # https://www.surfline.com/surf-reports-forecasts-cams#north-america
+    # https://www.surfline.com/surf-reports-forecasts-cams#oceania
+    # https://www.surfline.com/surf-reports-forecasts-cams#south-america
+
+    # countries = []
+    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + country_slug
+    # doc = Nokogiri::HTML(open(country_page))
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
+    # doc = Nokogiri::HTML(open("https://bestfriends.org/adopt/adopt-our-sanctuary/dogs"))
+    # binding.pry
+    doc.css("li ~ ul").text
+    binding.pry
+    country.name = doc.search('div.quiver-world-taxonomy__letter').text
+    country.url = doc.search('div.quiver-world-taxonomy__letter').attr('href').value
+
 
   end
 
