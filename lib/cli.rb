@@ -23,7 +23,7 @@ class CLI
   end
 
   def select_continent
-    continents = Scraper.scrape_continents
+    continents = Scraper.scrape_continents#(country_slug)
     user_input = gets.chomp
     if user_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
