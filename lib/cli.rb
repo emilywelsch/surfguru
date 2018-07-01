@@ -5,13 +5,6 @@ require_relative '../lib/beach.rb'
 require_relative '../lib/scraper.rb'
 
 class CLI
-  # https://www.surfline.com/surf-reports-forecasts-cams
-  # https://www.surfline.com/surf-reports-forecasts-cams#africa
-  # https://www.surfline.com/surf-reports-forecasts-cams#asia
-  # https://www.surfline.com/surf-reports-forecasts-cams#europe
-  # https://www.surfline.com/surf-reports-forecasts-cams#north-america
-  # https://www.surfline.com/surf-reports-forecasts-cams#oceania
-  # https://www.surfline.com/surf-reports-forecasts-cams#south-america
 
   def surf
     puts "  "
@@ -35,9 +28,12 @@ class CLI
     if user_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif user_input.to_i.between?(1, Scraper.scrape_continents.size)
+    elsif user_input.to_i.between?(1, Scraper.scrape_continents.size-1)
       puts "Nice choice! There are lots of great surf spots in #{continents[user_input.to_i-1]}.".colorize(:cyan)
       list_countries
+    elsif user_input == "7"
+      puts "The world is your oyster! Let's check out the surf #{continents[user_input.to_i-1].downcase}.".colorize(:cyan)
+      list_all_beaches
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
@@ -94,6 +90,14 @@ class CLI
       puts "  "
       list_beaches
     end
+  end
+
+  def list_all_beaches
+    puts "Let's check out all the best surf beaches in the world."
+    puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
+    Beach.all.each.with_index(1) { |beach, i| puts "#{i}. #{beach} - Surf Swell Condition Currently" }
+    puts "  "
+    select_beach
   end
 
   def list_beach_details
