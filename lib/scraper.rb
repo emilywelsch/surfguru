@@ -32,11 +32,13 @@ class Scraper
     binding.pry
     # doc.css("li ~ ul").text
     # binding.pry
-    country.name = doc.search('div.quiver-world-taxonomy__letter').text.split(" ")[0].strip
-    country.url = doc.search('div.quiver-world-taxonomy__letter').attr('href').value
-
-    # doc.search('div.quiver-world-taxonomy__letter')[0].css('a')[0].text.split(" ")[0]
-
+    country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].text.split(" ")[0] # => Algeria
+    country(Angola).name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" ")[0] # => Angola
+    country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" ")[0] # => Cape !! of Cape Verde
+    # Need to split array above to take only everything before "Surf Reports & Cams"
+    # urls below still not scraping
+    country.url = doc.search('div.quiver-world-taxonomy__countries').attr('href').value
+    country.url = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
   end
 
   def self.scrape_beaches#(country_beaches_slug)
@@ -51,9 +53,10 @@ class Scraper
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
+      # Need to split array below for tide height and wind better
       beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      beach_details[:beach_url] = beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message!
+      beach_details[:beach_url] = beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
       beaches << beach_details
     end
     beaches
