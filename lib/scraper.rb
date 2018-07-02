@@ -14,8 +14,8 @@ class Scraper
   end
 
   def self.scrape_countries#(country_slug)
-    countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
-    countries
+    # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
+    # countries
 
     # https://www.surfline.com/surf-reports-forecasts-cams
     # https://www.surfline.com/surf-reports-forecasts-cams#africa
@@ -28,13 +28,14 @@ class Scraper
     # countries = []
     # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + country_slug
     # doc = Nokogiri::HTML(open(country_page))
-    # doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-    # binding.pry
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
+    binding.pry
     # doc.css("li ~ ul").text
     # binding.pry
-    # country.name = doc.search('div.quiver-world-taxonomy__letter').text
-    # country.url = doc.search('div.quiver-world-taxonomy__letter').attr('href').value
+    country.name = doc.search('div.quiver-world-taxonomy__letter').text.split(" ")[0].strip
+    country.url = doc.search('div.quiver-world-taxonomy__letter').attr('href').value
 
+    # doc.search('div.quiver-world-taxonomy__letter')[0].css('a')[0].text.split(" ")[0]
 
   end
 
@@ -46,12 +47,13 @@ class Scraper
     beaches_page = "https://www.surfline.com/" + country_beaches_slug #this will come as the variable to the method
     doc = Nokogiri::HTML(open(beaches_page))
     doc.css('div.sl-spot-list__ref').each do |beach|
+      # binding.pry
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
       beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      # beach_details[:beach_url] = beach.css('a').attribute('href').value          # nokogiri error message!
+      beach_details[:beach_url] = beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message!
       beaches << beach_details
     end
     beaches
@@ -97,6 +99,6 @@ class Scraper
     # sunrise
     # sunset
     # last light
-  
+
 
 end
