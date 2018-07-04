@@ -17,22 +17,28 @@ class Scraper
     # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
     # countries
 
-    # countries = []
-    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + continent_slug
+    countries = []
     # continent_slug = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
+    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + continent_slug
     # doc = Nokogiri::HTML(open(country_page))
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-    binding.pry
+    # binding.pry
         country_details = {}
         n = 0
-        until n == 2
+        until n == 10
           country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[n].text.split(" S")[0]
 	        n += 1
         end
+        countries << country_details
+        binding.pry
+        countries
+
+        # arr = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')
+        # arr.each do |e|
 
     # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].text.split(" S")[0] # => Algeria
-    # country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" S")[0] # => Angola
-    # country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" S")[0] # => Cape Verde
+    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" S")[0] # => Angola
+    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" S")[0] # => Cape Verde
     # urls below still not scraping (is it needed?)
     # country.url = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
   end
@@ -67,7 +73,7 @@ class Scraper
     beach_page = "https://www.surfline.com/" + beach_slug #this will come as the variable to the method
     doc = Nokogiri::HTML(open(beach_page))
         doc.css('div.sl-spot-report').each do |beach|
-        binding.pry
+        # binding.pry
         beach_details[:name] = beach.css('h3.sl-spot-details__name').text
         beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
         beach_details[:tide_height] = beach.css('span.sl-reading').text
