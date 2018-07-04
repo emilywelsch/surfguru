@@ -13,12 +13,11 @@ class Scraper
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7], "Everywhere"]
   end
 
-  def self.scrape_countries
+  def self.scrape_countries(user_input)
     # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
     # countries
 
     countries = []
-
       case user_input
 
         when "1"

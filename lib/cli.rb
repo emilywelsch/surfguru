@@ -23,14 +23,14 @@ class CLI
   end
 
   def select_continent
-    continents = Scraper.scrape_continents#(country_slug)
+    continents = Scraper.scrape_continents
     user_input = gets.chomp
     if user_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
     elsif user_input.to_i.between?(1, Scraper.scrape_continents.size-1)
       puts "Nice choice! There are lots of great surf spots in #{continents[user_input.to_i-1]}.".colorize(:cyan)
-      list_countries
+      list_countries(user_input)
     elsif user_input == "7"
       puts "The world is your oyster! Let's check out the surf #{continents[user_input.to_i-1].downcase}.".colorize(:cyan)
       list_all_beaches
@@ -41,9 +41,9 @@ class CLI
     end
   end
 
-  def list_countries
+  def list_countries(user_input)
     # continent_slugs = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
-    countries = Scraper.scrape_countries#(continent_slug)
+    countries = Scraper.scrape_countries(user_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
