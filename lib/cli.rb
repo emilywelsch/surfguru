@@ -47,24 +47,24 @@ class CLI
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
-    select_country
+    select_country(user_input)
   end
 
-  def select_country
-    countries = Scraper.scrape_countries
+  def select_country(user_input)
+    # countries = Scraper.scrape_countries(user_input)
     user_input = gets.chomp
     if user_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
     elsif user_input == "go back"
       list_continents
-    elsif user_input.to_i.between?(1, Scraper.scrape_countries.size)
+    elsif user_input.to_i.between?(1, Scraper.scrape_countries(user_input).size) # <-- this is the problem
       puts "Here's a list of some amazing surf spots in #{countries[user_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
       list_beaches
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
-      list_countries
+      list_countries(user_input)
     end
   end
 

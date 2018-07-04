@@ -45,6 +45,7 @@ class Scraper
         else
           puts "Uh oh... something has gone terribly wrong."
       end
+      countries
 
   end
 
