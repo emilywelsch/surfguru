@@ -42,7 +42,8 @@ class CLI
   end
 
   def list_countries
-    countries = Scraper.scrape_countries
+    # continent_slugs = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
+    countries = Scraper.scrape_countries#(continent_slug)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
