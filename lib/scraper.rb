@@ -13,34 +13,40 @@ class Scraper
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7], "Everywhere"]
   end
 
-  def self.scrape_countries#(continent_slug)
+  def self.scrape_countries
     # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
     # countries
 
     countries = []
-    # continent_slug = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
-    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + continent_slug
-    # doc = Nokogiri::HTML(open(country_page))
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-    # binding.pry
-        country_details = {}
-        n = 0
-        until n == 10
-          country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[n].text.split(" S")[0]
-	        n += 1
-        end
-        countries << country_details
-        binding.pry
-        countries
 
-        # arr = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')
-        # arr.each do |e|
+      case user_input
 
-    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].text.split(" S")[0] # => Algeria
-    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" S")[0] # => Angola
-    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" S")[0] # => Cape Verde
-    # urls below still not scraping (is it needed?)
-    # country.url = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
+        when "1"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
+          # urls = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
+        when "2"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#asia"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[1].css('a').text.split(" Surf Reports & Cams")
+        when "3"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#europe"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[2].css('a').text.split(" Surf Reports & Cams")
+        when "4"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#north-america"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[3].css('a').text.split(" Surf Reports & Cams")
+        when "5"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#oceania"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[4].css('a').text.split(" Surf Reports & Cams")
+        when "6"
+          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#south-america"))
+          countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
+        # when "Everywhere"
+        #   doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
+        #   countries = doc.search('div.quiver-world-taxonomy__countries').css('a').text.split(" Surf Reports & Cams")
+        else
+          puts "Uh oh... something has gone terribly wrong."
+      end
+
   end
 
   def self.scrape_beaches#(country_beaches_slug)
