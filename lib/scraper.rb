@@ -13,32 +13,28 @@ class Scraper
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7], "Everywhere"]
   end
 
-  def self.scrape_countries#(country_slug)
+  def self.scrape_countries#(continent_slug)
     # countries = ["Algeria", "Angola", "Cape Verde", "Ghana", "Ivory Coast", "Liberia", "Madagascar"]
     # countries
 
-    # https://www.surfline.com/surf-reports-forecasts-cams
-    # https://www.surfline.com/surf-reports-forecasts-cams#africa
-    # https://www.surfline.com/surf-reports-forecasts-cams#asia
-    # https://www.surfline.com/surf-reports-forecasts-cams#europe
-    # https://www.surfline.com/surf-reports-forecasts-cams#north-america
-    # https://www.surfline.com/surf-reports-forecasts-cams#oceania
-    # https://www.surfline.com/surf-reports-forecasts-cams#south-america
-
     # countries = []
-    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + country_slug
+    # country_page = "https://www.surfline.com/surf-reports-forecasts-cams" + continent_slug
+    # continent_slug = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
     # doc = Nokogiri::HTML(open(country_page))
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
     binding.pry
-    # doc.css("li ~ ul").text
-    # binding.pry
-    country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].text.split(" ")[0] # => Algeria
-    country(Angola).name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" ")[0] # => Angola
-    country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" ")[0] # => Cape !! of Cape Verde
-    # Need to split array above to take only everything before "Surf Reports & Cams"
-    # urls below still not scraping
-    country.url = doc.search('div.quiver-world-taxonomy__countries').attr('href').value
-    country.url = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
+        country_details = {}
+        n = 0
+        until n == 2
+          country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[n].text.split(" S")[0]
+	        n += 1
+        end
+
+    # country_details[:name] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].text.split(" S")[0] # => Algeria
+    # country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].text.split(" S")[0] # => Angola
+    # country.name = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].text.split(" S")[0] # => Cape Verde
+    # urls below still not scraping (is it needed?)
+    # country.url = doc.search('div.quiver-world-taxonomy__countries')[0].attribute('href').value if(doc.css('a').length > 0)
   end
 
   def self.scrape_beaches#(country_beaches_slug)
