@@ -24,15 +24,15 @@ class CLI
 
   def select_continent
     continents = Scraper.scrape_continents
-    user_input = gets.chomp
-    if user_input == "exit"
+    continent_input = gets.chomp
+    if continent_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif user_input.to_i.between?(1, Scraper.scrape_continents.size-1)
-      puts "Nice choice! There are lots of great surf spots in #{continents[user_input.to_i-1]}.".colorize(:cyan)
-      list_countries(user_input)
-    elsif user_input == "7"
-      puts "The world is your oyster! Let's check out the surf #{continents[user_input.to_i-1].downcase}.".colorize(:cyan)
+    elsif continent_input.to_i.between?(1, Scraper.scrape_continents.size-1)
+      puts "Nice choice! There are lots of great surf spots in #{continents[continent_input.to_i-1]}.".colorize(:cyan)
+      list_countries(continent_input)
+    elsif continent_input == "7"
+      puts "The world is your oyster! Let's check out the surf #{continents[continent_input.to_i-1].downcase}.".colorize(:cyan)
       list_all_beaches
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -41,55 +41,53 @@ class CLI
     end
   end
 
-  def list_countries(user_input)
-    # continent_slugs = ["#africa", "#asia", "#europe", "#north-america", "#oceania", "#south-america"]
-    countries = Scraper.scrape_countries(user_input)
+  def list_countries(continent_input)
+    countries = Scraper.scrape_countries(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
-    select_country(user_input)
+    select_country(continent_input)
   end
 
-  def select_country(user_input)
-    # countries = Scraper.scrape_countries(user_input)
-    user_input = gets.chomp
-    if user_input == "exit"
+  def select_country(continent_input)
+    country_input = gets.chomp
+    if country_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif user_input == "go back"
+    elsif country_input == "go back"
       list_continents
-    elsif user_input.to_i.between?(1, Scraper.scrape_countries(user_input).size) # <-- this is the problem
-      puts "Here's a list of some amazing surf spots in #{countries[user_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
+    elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size) # <-- this is the problem
+      puts "Here's a list of some amazing surf spots in #{Scraper.scrape_countries(continent_input)[country_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
       list_beaches
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
-      list_countries(user_input)
+      list_countries(continent_input)
     end
   end
 
-  def list_beaches
-    beaches = Scraper.scrape_beaches
+  def list_beaches#(country_input)
+    beaches = Scraper.scrape_beaches#(country_input) #<-- make this scrape the right countries
     puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
     beaches.each.with_index(1) { |beach, i| puts "#{i}. #{beach} - Surf Swell Condition Currently" }
     puts "  "
     select_beach
   end
 
-  def select_beach
-    beaches = Scraper.scrape_beaches
-    user_input = gets.chomp
-    if user_input == "exit"
+  def select_beach#(country_input)
+    beaches = Scraper.scrape_beaches#(country_input)
+    beach_input = gets.chomp
+    if beach_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif user_input == "go back"
+    elsif beach_input == "go back"
       list_countries
-    elsif user_input.to_i.between?(1, Scraper.scrape_beaches.size)
+    elsif beach_input.to_i.between?(1, Scraper.scrape_beaches.size)
       list_beach_details
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
-      list_beaches
+      list_beaches#(country_input)
     end
   end
 
