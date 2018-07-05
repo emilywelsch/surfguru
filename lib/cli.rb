@@ -19,7 +19,8 @@ class CLI
     puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
-    select_continent
+    Scraper.scrape_country_urls #remove this after testing
+    # select_continent # uncomment out after testing
   end
 
   def select_continent
@@ -58,7 +59,7 @@ class CLI
       list_continents
     elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size) # <-- this is the problem
       puts "Here's a list of some amazing surf spots in #{Scraper.scrape_countries(continent_input)[country_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
-      list_beaches
+      list_beaches#(country_input) #need to have already scraped the country url to read this...
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
