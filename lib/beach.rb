@@ -1,7 +1,7 @@
 # require "surfguru/version"
 
 class Beach
-  attr_accessor :name, :surf_height, :tide_height, :wind, :country_name, :country_url, :beach_url
+  attr_accessor :name, :surf_height, :tide_height, :wind, :country_name, :country_url, :beach_url, :continent_name
   @@all = []
 
   def initialize(attributes)

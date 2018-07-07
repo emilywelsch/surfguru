@@ -71,13 +71,15 @@ class Scraper
       country_details = {}
       x = 0 && y = 0
       while x < 15 && y < 15
-      country_details[:country_url] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href') #if(doc.css('a').length > 0)
       country_details[:country_name] = country_names[y]
+      country_details[:country_url] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href') #if(doc.css('a').length > 0)
+      country_details[:continent_name] = "Africa"
+      country_details[:continent_url] = "https://www.surfline.com/surf-reports-forecasts-cams#africa"
       countries << country_details
       x += 1 && y += 1
       end
       countries
-    
+
   end
 
   def self.scrape_beaches#(country_beaches_slug) #(country_input)
