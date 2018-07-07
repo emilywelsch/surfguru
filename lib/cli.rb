@@ -19,8 +19,7 @@ class CLI
     puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
-    print Scraper.scrape_country_urls #remove this after testing
-    # select_continent # uncomment out after testing
+    select_continent
   end
 
   def select_continent
