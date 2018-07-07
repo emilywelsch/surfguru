@@ -49,9 +49,10 @@ class Scraper
 
   def self.scrape_country_urls
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].attr('value').value if(doc.css('a').length > 0)
-    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].attr('href').value if(doc.css('a').length > 0)
-    info = doc.css('div.quiver-world-taxonomy__countries')[0].css('a')[1].attr('href').value if(doc.css('a').length > 0)
+    binding.pry
+    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].attr('href') if(doc.css('a').length > 0)
+    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].attr('href') if(doc.css('a').length > 0)
+    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].attr('href') if(doc.css('a').length > 0)
 
     # binding.pry
     #   info.each do |country|
