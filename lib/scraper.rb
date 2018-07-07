@@ -48,18 +48,36 @@ class Scraper
   end
 
   def self.scrape_country_urls
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-    binding.pry
-    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].attr('href') if(doc.css('a').length > 0)
-    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].attr('href') if(doc.css('a').length > 0)
-    info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].attr('href') if(doc.css('a').length > 0)
 
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
     # binding.pry
-    #   info.each do |country|
-    #     country_urls = {}
-    #     country_urls[:country_url] = country
-    #   end
-    #   country_urls
+    # info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].attr('href') if(doc.css('a').length > 0)
+    # info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[1].attr('href') if(doc.css('a').length > 0)
+    # info = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[2].attr('href') if(doc.css('a').length > 0)
+
+        #   x = 0
+        #   country_urls = []
+        #   while x < 16
+        #   country_urls << doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href') #if(doc.css('a').length > 0)
+        #   x += 1
+        #   end
+        #   country_urls
+        # end
+
+      countries = []
+      # country_names = []
+      country_names = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
+      # binding.pry
+      country_details = {}
+      x = 0 && y = 0
+      while x < 15 && y < 15
+      country_details[:country_url] = doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href') #if(doc.css('a').length > 0)
+      country_details[:country_name] = country_names[y]
+      countries << country_details
+      x += 1 && y += 1
+      end
+      countries
+    
   end
 
   def self.scrape_beaches#(country_beaches_slug) #(country_input)
