@@ -10,41 +10,36 @@ class Scraper
   def self.scrape_continents
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
     str = doc.search('div.quiver-world-taxonomy__continents').text.split /(?=[A-Z])/
-    continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7], "Everywhere"]
+    continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7]]
   end
 
   def self.scrape_countries(continent_input)
-
     countries = []
 
-      case continent_input
+    case continent_input
 
-        when "1"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
-        when "2"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#asia"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[1].css('a').text.split(" Surf Reports & Cams")
-        when "3"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#europe"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[2].css('a').text.split(" Surf Reports & Cams")
-        when "4"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#north-america"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[3].css('a').text.split(" Surf Reports & Cams")
-        when "5"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#oceania"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[4].css('a').text.split(" Surf Reports & Cams")
-        when "6"
-          doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#south-america"))
-          countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
-        # when "Everywhere"
-        #   doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
-        #   countries = doc.search('div.quiver-world-taxonomy__countries').css('a').text.split(" Surf Reports & Cams")
-        else
-          puts "Uh oh... something has gone terribly wrong."
-      end
-      countries
-
+      when "1"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
+      when "2"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#asia"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[1].css('a').text.split(" Surf Reports & Cams")
+      when "3"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#europe"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[2].css('a').text.split(" Surf Reports & Cams")
+      when "4"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#north-america"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[3].css('a').text.split(" Surf Reports & Cams")
+      when "5"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#oceania"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[4].css('a').text.split(" Surf Reports & Cams")
+      when "6"
+        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#south-america"))
+        countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
+      else
+        puts "Something has gone terribly wrong."
+    end
+    countries
   end
 
   def self.scrape_country_urls(continent_input)
@@ -112,16 +107,17 @@ class Scraper
         country_urls
 
       when "Everywhere"
-        puts "Yikes! I still need to write some code for this."
+        puts "Yikes! Looks like I still need to write some code for this option."
     end
+  end
 
-  def self.scrape_beaches#(country_beaches_slug) #(country_input)
-    # beaches = ["Annaba", "Decaplage", "Plage Mandjane", "Pipeline", "Chia"]
-    # beaches
+  def self.scrape_beaches(country_input)
+
+    # country_urls = Scraper.country_urls
+
     beaches = []
-    country_beaches_slug = "surf-reports-forecasts-cams/algeria/2589581"
-    beaches_page = "https://www.surfline.com/" + country_beaches_slug #this will come as the variable to the method
-    doc = Nokogiri::HTML(open(beaches_page))
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/angola/3351879"))
+    # doc = Nokogiri::HTML(open(country_urls[country_input.to_i-1]))
     doc.css('div.sl-spot-list__ref').each do |beach|
       # binding.pry
       beach_details = {}
@@ -130,7 +126,7 @@ class Scraper
       # Need to split array below for tide height and wind better
       beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
       beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      beach_details[:beach_url] = beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
+      beach_details[:beach_url] = "https://www.surfline.com/" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
       beaches << beach_details
     end
     beaches

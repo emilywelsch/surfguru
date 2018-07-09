@@ -31,11 +31,8 @@ class CLI
     elsif continent_input.to_i.between?(1, Scraper.scrape_continents.size-1)
       puts "Nice choice! There are lots of great surf spots in #{continents[continent_input.to_i-1]}.".colorize(:cyan)
       list_countries(continent_input)
-    elsif continent_input == "7"
-      puts "The world is your oyster! Let's check out the surf #{continents[continent_input.to_i-1].downcase}.".colorize(:cyan)
-      list_all_beaches
     else
-      puts "Invalid entry. Please try again".colorize(:red)
+      puts "Invalid entry. Please try again.".colorize(:red)
       puts "  "
       list_continents
     end
@@ -43,6 +40,7 @@ class CLI
 
   def list_countries(continent_input)
     countries = Scraper.scrape_countries(continent_input)
+    country_urls = Scraper.scrape_country_urls(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
@@ -56,9 +54,9 @@ class CLI
       exit
     elsif country_input == "go back"
       list_continents
-    elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size) # <-- this is the problem
+    elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size)
       puts "Here's a list of some amazing surf spots in #{Scraper.scrape_countries(continent_input)[country_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
-      list_beaches#(country_input) #need to have already scraped the country url to read this...
+      list_beaches(country_input)
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
@@ -66,10 +64,10 @@ class CLI
     end
   end
 
-  def list_beaches#(country_input)
-    beaches = Scraper.scrape_beaches#(country_input) #<-- make this scrape the right countries
+  def list_beaches(country_input)
+    beaches = Scraper.scrape_beaches(country_input) #<-- make this scrape the right countries
     puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
-    beaches.each.with_index(1) { |beach, i| puts "#{i}. #{beach} - Surf Swell Condition Currently" }
+    beaches.each.with_index(1) { |name, i| puts "#{i}. #{name} - Current Surf Height: #{surf_height}" }
     puts "  "
     select_beach
   end
