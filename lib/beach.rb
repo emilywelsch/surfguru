@@ -1,12 +1,12 @@
 # require "surfguru/version"
 
 class Beach
-  attr_accessor :name, :surf_height, :tide_height, :wind, :url, :country, :continent
+  attr_accessor :name, :url, :surf_height, :tide_height, :wind, :country, :continent
   @@all = []
 
   def initialize(attributes)
     attributes.each {|k, v| self.send(("#{k}="), v)}
-    @@all << self unless @@all.any? {|beach| beach.beach_url == self.beach_url}
+    @@all << self unless @@all.any? {|beach| beach.url == self.url}
   end
 
   def self.create_new(beach_array)
