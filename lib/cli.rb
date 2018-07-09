@@ -2,6 +2,8 @@
 require 'nokogiri'
 require 'colorize'
 require_relative '../lib/beach.rb'
+require_relative '../lib/country.rb'
+require_relative '../lib/continent.rb'
 require_relative '../lib/scraper.rb'
 
 class CLI
@@ -65,9 +67,26 @@ class CLI
   end
 
   def list_beaches(country_input)
-    beaches = Scraper.scrape_beaches(country_input) #<-- make this scrape the right countries
     puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
-    beaches.each.with_index(1) { |name, i| puts "#{i}. #{name} - Current Surf Height: #{surf_height}" }
+    make_beaches(country_input)
+    add_attributes_to_beaches
+    display_beaches
+  end
+
+  def make_beaches(beach.country_url)
+    beaches_array = Scraper.scrape_beaches(beach.country_url)
+    Beaches.create_new(beaches_array)
+  end
+
+  def add_attributes_to_beaches
+    Beach.all.each do |beach|
+      attributes = Scraper.scrape_beach_details(beach.beach_url)
+      beach.add_attributes(details_hash)
+    end
+  end
+
+  def display_beaches
+    Beaches.all.each.with_index(1) { |beach, i| puts "#{i}. #{beach.name} - Current Surf Height: #{beach.surf_height}" }
     puts "  "
     select_beach
   end
@@ -87,14 +106,6 @@ class CLI
       puts "  "
       list_beaches#(country_input)
     end
-  end
-
-  def list_all_beaches
-    puts "Let's check out all the best surf beaches in the world."
-    puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
-    Beach.all.each.with_index(1) { |beach, i| puts "#{i}. #{beach} - Surf Swell Condition Currently" }
-    puts "  "
-    select_beach
   end
 
   def list_beach_details
