@@ -6,6 +6,8 @@ class Country
 
   def initialize(name)
     @name = name
+    @continent = continent
+    @url = url
     @@all << self
   end
 
@@ -19,6 +21,23 @@ class Country
     else
       nil
     end
+  end
+
+  def add_beach(beach)
+    beach.country = self
+  end
+
+  def add_beach_by_name(name)
+    beach = Beach.new(name)
+    beach.country = self
+  end
+
+  def beaches
+    Beach.all.select {|beach| beach.country == self}
+  end
+
+  def self.beach_count
+    Beach.all.count
   end
 
 end
