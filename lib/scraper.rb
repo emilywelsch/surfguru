@@ -86,14 +86,10 @@ class Scraper
   end
 
   def self.scrape_beaches(country_input)
-
-    # country_urls = Scraper.country_urls
-
     beaches = []
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams/angola/3351879"))
-    # doc = Nokogiri::HTML(open(country_urls[country_input.to_i-1]))
+    doc = Nokogiri::HTML(open(Country.all[country_input.to_i-1].url))
     doc.css('div.sl-spot-list__ref').each do |beach|
-      # binding.pry
+      binding.pry
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
