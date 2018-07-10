@@ -55,8 +55,8 @@ class CLI
     elsif country_input == "go back"
       Country.clear_all
       list_continents
-    elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size)
-      puts "Here's a list of some amazing surf spots in #{Scraper.scrape_countries(continent_input)[country_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
+    elsif country_input.to_i.between?(1, Country.all.size)
+      puts "Here's a list of some amazing surf spots in #{Country.all[country_input.to_i-1].name}. with their current swell conditions.".colorize(:cyan)
       list_beaches(country_input)
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -67,9 +67,10 @@ class CLI
 
   def list_beaches(country_input)
     puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
-    make_beaches(country_input)
-    add_attributes_to_beaches
-    display_beaches
+    Scraper.scrape_beaches(country_input)
+    # make_beaches(country_input)
+    # add_attributes_to_beaches
+    # display_beaches
   end
 
   def make_beaches
