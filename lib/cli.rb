@@ -41,12 +41,8 @@ class CLI
 
   def list_countries(continent_input)
     Scraper.scrape_countries(continent_input)
-    # countries = Scraper.scrape_countries(continent_input)
-    # country_urls = Scraper.scrape_country_urls(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
-    # binding.pry
-    Country.all.each.with_index(1) { |country, i| puts "#{i}. #{country.name}" } # this is where I left off
-    # countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
+    Country.all.each.with_index(1) {|country, i| puts "#{i}. #{country.name}"}
     puts "  "
     select_country(continent_input)
   end
@@ -57,6 +53,7 @@ class CLI
       puts "Catch you on the next wave!".colorize(:blue)
       exit
     elsif country_input == "go back"
+      Country.clear_all
       list_continents
     elsif country_input.to_i.between?(1, Scraper.scrape_countries(continent_input).size)
       puts "Here's a list of some amazing surf spots in #{Scraper.scrape_countries(continent_input)[country_input.to_i-1]} with their current swell conditions.".colorize(:cyan)
