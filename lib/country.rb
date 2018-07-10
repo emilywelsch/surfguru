@@ -5,6 +5,7 @@ class Country
   @@all = []
 
   def initialize(country_hash)
+    # delete_no_urls(country_hash) don't even initialize countries without urls
     country_hash.each do |key, value|
       self.send("#{key}=", value)
     end
@@ -13,6 +14,11 @@ class Country
 
   def self.clear_all
     @@all = []
+  end
+
+  def delete_no_urls(country_hash)
+
+    @@all.reject! {|key, value| }
   end
 
   # def self.create_new(country_array)
