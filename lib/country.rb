@@ -1,12 +1,11 @@
 # require "surfguru/version"
 
 class Country
-  attr_accessor :name, :continent, :url
+  attr_accessor :name, :url, :continent
   @@all = []
 
-  def initialize(name)
+  def initialize(name, url = nil)
     @name = name
-    @continent = continent
     @url = url
     @@all << self
   end
