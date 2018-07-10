@@ -73,16 +73,22 @@ class Scraper
         countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
 
         while x < 11
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[5].css('a')[x].attr('href')
+        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[5].css('a')[x].attr('href') if(doc.css('a').length > 0)
         x += 1
         end
 
       else
         puts "Something has gone terribly wrong."
     end
-    arr = countries.zip(country_urls)
-    country_details = arr.map{|country, country_url| {name: country, url: country_url}}
-    country_details.each {|country| Country.new(country)}
+    binding.pry
+    countries.each {|country| Country.new(country)}
+    country_urls.each {|country_url| Country.} #* add these attributes
+    
+    # arr = countries.zip(country_urls)
+    # country_array = arr.map{|country, country_url| {name: country, url: country_url}}
+    # Country.create_new(country_array)
+    # country_details.each {|country| Country.new(country)}
+    # arr.each {|country| Country.new(country)}
   end
 
   # def self.scrape_country_urls(continent_input)

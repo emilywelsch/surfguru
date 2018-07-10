@@ -4,10 +4,22 @@ class Country
   attr_accessor :name, :url, :continent
   @@all = []
 
-  def initialize(name, url = nil)
+  def initialize(name) #url = nil)
     @name = name
-    @url = url
+    # @url = url
     @@all << self
+  end
+
+  def self.create_new(country_array)
+    country_array.each do |country_hash|
+      self.new(country_hash)
+    end
+  end
+
+  def add_attributes(details_hash)
+    details_hash.each do |k, v|
+      self.send(("#{k}="), v)
+    end
   end
 
   def self.all

@@ -29,7 +29,7 @@ class CLI
     if continent_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-  elsif continent_input.to_i.between?(1, Continent.all.size-1)
+  elsif continent_input.to_i.between?(1, Continent.all.size)
       puts "Nice choice! There are lots of great surf spots in #{Continent.all[continent_input.to_i-1].name}.".colorize(:cyan)
       list_countries(continent_input)
     else
@@ -44,10 +44,10 @@ class CLI
     # countries = Scraper.scrape_countries(continent_input)
     # country_urls = Scraper.scrape_country_urls(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
+    # binding.pry
     Country.all.each.with_index(1) { |country, i| puts "#{i}. #{country.name}" } # this is where I left off
     # countries.each.with_index(1) { |country, i| puts "#{i}. #{country}" }
     puts "  "
-binding.pry
     select_country(continent_input)
   end
 
