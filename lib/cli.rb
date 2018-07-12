@@ -56,7 +56,7 @@ class CLI
       Country.clear_all
       list_continents
     elsif country_input.to_i.between?(1, Country.all.size)
-      puts "Here's a list of some amazing surf spots in #{Country.all[country_input.to_i-1].name}. with their current swell conditions.".colorize(:cyan)
+      puts "Here's a list of some amazing surf spots in #{Country.all[country_input.to_i-1].name} with their current swell conditions.".colorize(:cyan)
       list_beaches(country_input)
     else
       puts "Invalid entry. Please try again".colorize(:red)
@@ -66,51 +66,47 @@ class CLI
   end
 
   def list_beaches(country_input)
-    puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
     Scraper.scrape_beaches(country_input)
-    # make_beaches(country_input)
-    # add_attributes_to_beaches
-    # display_beaches
-  end
-
-  def make_beaches
-    beaches_array = Scraper.scrape_beaches(beach.country_url)
-    Beaches.create_new(beaches_array)
-  end
-
-  def add_attributes_to_beaches
-    Beach.all.each do |beach|
-      attributes = Scraper.scrape_beach_details(beach.beach_url)
-      beach.add_attributes(details_hash)
-    end
-  end
-
-  def display_beaches
-    Beaches.all.each.with_index(1) { |beach, i| puts "#{i}. #{beach.name} - Current Surf Height: #{beach.surf_height}" }
+    puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
+    Beach.all.each.with_index(1) {|beach, i| puts "#{i}. #{beach.name}: #{beach.surf_height}"}
     puts "  "
-    select_beach
+    select_beach(country_input)
   end
 
-  def select_beach#(country_input)
-    beaches = Scraper.scrape_beaches#(country_input)
+  def select_beach(country_input)
     beach_input = gets.chomp
     if beach_input == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
     elsif beach_input == "go back"
-      list_countries
-    elsif beach_input.to_i.between?(1, Scraper.scrape_beaches.size)
-      list_beach_details
+      Beach.clear_all
+      list_continents
+    elsif beach_input.to_i.between?(1, Beach.all.size)
+      list_beach_details(beach_input)
     else
       puts "Invalid entry. Please try again".colorize(:red)
       puts "  "
-      list_beaches#(country_input)
+      list_beaches(country_input)
     end
   end
 
-  def list_beach_details
-    # Scraper.scrape_beach_details
-    puts "Beach details will go here.".colorize(:blue)
+  def list_beach_details(beach_input)
+    Scraper.scrape_beache_details(beach_input)
+    puts "Here is the additional information you requested for #{Beach.all[beach_input.to_i-1].name}:"
+      Beach.all.each do |beach, i|
+        puts "·÷±‡± #{beach.name} ±‡±÷·"
+        puts "-------------------------"
+        puts "Surf: #{beach.surf_height}"
+        puts "Tide: #{beach.tide_height}"
+        puts "Wind: #{beach.wind}"
+        puts "Water Temperature: #{beach.water_temp}"
+        puts "Outside Temperature: #{beach.outside_temp}"
+        puts "First Light: #{beach.first_light}"
+        puts "Sunrise: #{beach.sunrise}"
+        puts "Sunset: #{beach.sunset}"
+        puts "Last Light: #{beach.last_light}"
+        puts "........................."
+      end
     puts "  "
     surf_again?
   end

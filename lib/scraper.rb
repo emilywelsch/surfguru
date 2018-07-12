@@ -89,28 +89,20 @@ class Scraper
     beaches = []
     doc = Nokogiri::HTML(open(Country.all[country_input.to_i-1].url))
     doc.css('div.sl-spot-list__ref').each do |beach|
-      binding.pry
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-      # Need to split array below for tide height and wind better
-      beach_details[:tide_height] = beach.css('div.sl-spot-report-summary__value').text.scan /^(.*?)T/
-      beach_details[:wind] = beach.css('div.sl-spot-report-summary__value').text
-      beach_details[:beach_url] = "https://www.surfline.com/" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
+      beach_details[:url] = "https://www.surfline.com/" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
       beaches << beach_details
     end
-    beaches
+    beaches.each {|beach_hash| Beach.new(beach_hash)}
   end
 
-  def self.scrape_beach_details#(beach_slug)
-    # beach_details = {:surf_height=>"flat", :wind=>"23 kts", :swell=>"1-2 ft"}
-    # beach_details
+  def self.scrape_beach_details(beach_input)
     beaches = []
-    beach_details = {}
-    beach_slug = "surf-report/decaplage/584204214e65fad6a7709ce3"
-    beach_page = "https://www.surfline.com/" + beach_slug #this will come as the variable to the method
-    doc = Nokogiri::HTML(open(beach_page))
-        doc.css('div.sl-spot-report').each do |beach|
+    doc = Nokogiri::HTML(open(Beach.all[beach_input.to_i-1].url))
+      doc.css('div.sl-spot-report').each do |beach|
+        beach_details = {}
         # binding.pry
         beach_details[:name] = beach.css('h3.sl-spot-details__name').text
         beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
