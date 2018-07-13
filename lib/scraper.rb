@@ -122,6 +122,23 @@ class Scraper
           else beach_details[:swells] = ["Swell information not available."]
           end
 
+          # water_air_temp_array = doc.css('div.sl-wetsuit-recommender__weather').attr('alt').text # parse with regex
+            # beach_details[:water_temp] =
+            # beach_details[:air_temp] =
+
+          sun_table = doc.at('.sl-forecast-graphs__table.sl-forecast-graphs__table--sunlight-times')
+          sun_table = doc.search('table')
+            sun_table.search('tr').each do |tr|
+              cells = tr.search('td')
+            end
+            cells.each do |cell|
+              text = cell.text.strip
+              puts text
+            end
+
+          sun_table_array = doc.css('table.open').text # parse with regex
+
+
         beaches << beach_details
       # end
       # doc.css('div.sl-wetsuit-recommender__weather').each do |beach|
