@@ -101,21 +101,27 @@ class Scraper
   def self.scrape_beach_details(beach_input)
     beaches = []
     doc = Nokogiri::HTML(open(Beach.all[beach_input.to_i-1].url))
-      # binding.pry
-      # doc.css('div.sl-spot-report').each do |beach|
         beach_details = {}
         binding.pry
         # beach_details[:name] = beach.css('h3.sl-spot-details__name').text
         # beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-        beach_details[:tide_height] = doc.css('span.sl-reading').text
-        beach_details[:wind] = doc.css('span.sl-reading').text
+
+          wind_tide_array = doc.css('span.sl-reading').text.split /(?<=FT)/
+          if wind_tide_array.length == 1
+            beach_details[:tide_height] = ["Tide height information not available."]
+            beach_details[:wind] = wind_tide_array[0]
+          elsif wind_tide_array.length == 2
+            beach_details[:tide_height] = wind_tide_array[0]
+            beach_details[:wind] = wind_tide_array[1]
+          else
+          end
 
           swells_array = doc.css('div.sl-spot-forecast-summary__stat-swells').text.split("Swells")
           if swells_array.length > 0
             beach_details[:swells] = swells_array[1].split /(?<=º)/
-          else beach_details[:swells] = ["Swell data not available."]
+          else beach_details[:swells] = ["Swell information not available."]
           end
-          
+
         beaches << beach_details
       # end
       # doc.css('div.sl-wetsuit-recommender__weather').each do |beach|
