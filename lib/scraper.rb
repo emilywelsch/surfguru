@@ -92,7 +92,7 @@ class Scraper
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-      beach_details[:url] = "https://www.surfline.com/" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
+      beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
       beaches << beach_details
     end
     beaches.each {|beach_hash| Beach.new(beach_hash)}
@@ -101,22 +101,29 @@ class Scraper
   def self.scrape_beach_details(beach_input)
     beaches = []
     doc = Nokogiri::HTML(open(Beach.all[beach_input.to_i-1].url))
-      doc.css('div.sl-spot-report').each do |beach|
+      # binding.pry
+      # doc.css('div.sl-spot-report').each do |beach|
         beach_details = {}
-        # binding.pry
-        beach_details[:name] = beach.css('h3.sl-spot-details__name').text
-        beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-        beach_details[:tide_height] = beach.css('span.sl-reading').text
-        beach_details[:wind] = beach.css('span.sl-reading').text
-        beach_details[:swells] = beach.css('div.sl-swell-measurements.sl-swell-measurements--1').text
+        binding.pry
+        # beach_details[:name] = beach.css('h3.sl-spot-details__name').text
+        # beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
+        beach_details[:tide_height] = doc.css('span.sl-reading').text
+        beach_details[:wind] = doc.css('span.sl-reading').text
+
+          swells_array = doc.css('div.sl-spot-forecast-summary__stat-swells').text.split("Swells")
+          if swells_array.length > 0
+            beach_details[:swells] = swells_array[1].split /(?<=º)/
+          else beach_details[:swells] = ["Swell data not available."]
+          end
+          
         beaches << beach_details
-      end
-      doc.css('div.sl-wetsuit-recommender__weather').each do |beach|
-        beach_details[:water_temp] = beach.css('div').attr('alt').text # parse with regex
-        beach_details[:air_temp] = beach.css('div').attr('alt').text # parse with regex
-        beach_details[:sun_table] = beach.css('table.sl-forecast-graphs__table sl-forecast-graphs__table--sunlight-times').text # parse with regex
-        beaches << beach_details
-      end
+      # end
+      # doc.css('div.sl-wetsuit-recommender__weather').each do |beach|
+      #   beach_details[:water_temp] = beach.css('div').attr('alt').text # parse with regex
+      #   beach_details[:air_temp] = beach.css('div').attr('alt').text # parse with regex
+      #   beach_details[:sun_table] = beach.css('table.sl-forecast-graphs__table sl-forecast-graphs__table--sunlight-times').text # parse with regex
+      #   beaches << beach_details
+      # end
       beaches
     end
 

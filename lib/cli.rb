@@ -91,9 +91,10 @@ class CLI
   end
 
   def list_beach_details(beach_input)
-    Scraper.scrape_beache_details(beach_input)
+    Scraper.scrape_beach_details(beach_input)
     puts "Here is the additional information you requested for #{Beach.all[beach_input.to_i-1].name}:"
       Beach.all.each do |beach, i|
+        puts "  "
         puts "·÷±‡± #{beach.name} ±‡±÷·"
         puts "-------------------------"
         puts "Surf: #{beach.surf_height}"
@@ -106,6 +107,8 @@ class CLI
         puts "Sunset: #{beach.sunset}"
         puts "Last Light: #{beach.last_light}"
         puts "........................."
+        puts "For more information about #{beach.name}, visit #{beach.url}."
+        puts "  "
       end
     puts "  "
     surf_again?
