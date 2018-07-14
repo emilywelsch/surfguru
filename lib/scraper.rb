@@ -99,71 +99,41 @@ class Scraper
   end
 
   def self.scrape_beach_details(beach_input)
-    beaches = []
     doc = Nokogiri::HTML(open(Beach.all[beach_input.to_i-1].url))
-        beach_details = {}
-        binding.pry
-        # beach_details[:name] = beach.css('h3.sl-spot-details__name').text
-        # beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
+      beach_details = {}
 
-          wind_tide_array = doc.css('span.sl-reading').text.split /(?<=FT)/
-          if wind_tide_array.length == 1
-            beach_details[:tide_height] = ["Tide height information not available."]
-            beach_details[:wind] = wind_tide_array[0]
-          elsif wind_tide_array.length == 2
-            beach_details[:tide_height] = wind_tide_array[0]
-            beach_details[:wind] = wind_tide_array[1]
-          else
-          end
+      wind_tide_array = doc.css('span.sl-reading').text.split /(?<=FT)/
+      if wind_tide_array.length == 1
+        beach_details[:tide_height] = ["Tide height information not available."]
+        beach_details[:wind] = wind_tide_array[0]
+      elsif wind_tide_array.length == 2
+        beach_details[:tide_height] = wind_tide_array[0]
+        beach_details[:wind] = wind_tide_array[1]
+      else
+      end
 
-          swells_array = doc.css('div.sl-spot-forecast-summary__stat-swells').text.split("Swells")
-          if swells_array.length > 0
-            beach_details[:swells] = swells_array[1].split /(?<=º)/
-          else beach_details[:swells] = ["Swell information not available."]
-          end
+      swells_array = doc.css('div.sl-spot-forecast-summary__stat-swells').text.split("Swells")
+      if swells_array.length > 0
+        beach_details[:swells] = swells_array[1].split /(?<=º)/
+      else beach_details[:swells] = ["Swell information not available."]
+      end
 
-          # water_air_temp_array = doc.css('div.sl-wetsuit-recommender__weather').attr('alt').text # parse with regex
-            # beach_details[:water_temp] =
-            # beach_details[:air_temp] =
+      water_air_temp_array = doc.css('div.sl-wetsuit-recommender__weather').text.split /(?<=F)/
+        beach_details[:water_temp] = water_air_temp_array[0]
+        beach_details[:air_temp] = water_air_temp_array[1]
 
-          sun_table = doc.at('.sl-forecast-graphs__table.sl-forecast-graphs__table--sunlight-times')
-          sun_table = doc.search('table')
-            sun_table.search('tr').each do |tr|
-              cells = tr.search('td')
-            end
-            cells.each do |cell|
-              text = cell.text.strip
-              puts text
-            end
+      arr1 = doc.css('div.sl-ideal-conditions__condition__description').text.split /(Tide)/
+        beach_details[:ideal_tide] = arr1[2]
+      arr2 = arr1[0].split /(Surf Height)/
+        beach_details[:ideal_surf_height] = arr2[2]
+      arr3 = arr2[0].split /(Wind)/
+        beach_details[:ideal_wind] = arr3[2]
+      arr4 = arr3[0].split /(Swell Direction)/
+        beach_details[:ideal_swell_direction] = arr4[2]
 
-          sun_table_array = doc.css('table.open').text # parse with regex
-
-
-        beaches << beach_details
-      # end
-      # doc.css('div.sl-wetsuit-recommender__weather').each do |beach|
-      #   beach_details[:water_temp] = beach.css('div').attr('alt').text # parse with regex
-      #   beach_details[:air_temp] = beach.css('div').attr('alt').text # parse with regex
-      #   beach_details[:sun_table] = beach.css('table.sl-forecast-graphs__table sl-forecast-graphs__table--sunlight-times').text # parse with regex
-      #   beaches << beach_details
-      # end
+      beaches << beach_details
       beaches
     end
-
-    # name
-    # surf height
-    # wind (kts)
-    # swell (ft)
-    # water temp (f)
-    # outside temp (f)
-    # ideal swell direction
-    # ideal wind direction
-    # ideal surf height (ft)
-    # ideal tide
-    # first light
-    # sunrise
-    # sunset
-    # last light
-
+    Beach.all[beach_input.to_i-1].add_attributes(beach_details)
 
 end
