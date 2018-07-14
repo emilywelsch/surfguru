@@ -6,7 +6,7 @@ class Beach
 
   def initialize(beach_hash)
     beach_hash.each do |key, value|
-      self.send("#{key}=", value)
+      self.send("#{key}=", value) if value.length > 0
     end
     @@all << self
   end
@@ -14,12 +14,6 @@ class Beach
   def self.clear_all
     @@all = []
   end
-
-  # def self.create_new(beach_array)
-  #   beach_array.each do |beach_hash|
-  #     self.new(beach_hash)
-  #   end
-  # end
 
   def add_attributes(beach_details)
     beach_details.each do |k, v|
