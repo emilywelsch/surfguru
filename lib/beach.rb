@@ -1,7 +1,7 @@
 # require "surfguru/version"
 
 class Beach
-  attr_accessor :name, :url, :surf_height, :tide_height, :wind, :water_temp, :outside_temp, :first_light, :sunrise, :sunset, :last_light, :country, :continent
+  attr_accessor :name, :url, :surf_height, :tide, :wind, :swell_direction, :water_temp, :outside_temp, :ideal_surf_height, :ideal_tide, :ideal_wind, :ideal_swell_direction, :country, :continent
   @@all = []
 
   def initialize(beach_hash)
@@ -20,12 +20,12 @@ class Beach
   #     self.new(beach_hash)
   #   end
   # end
-  #
-  # def add_attributes(details_hash)
-  #   details_hash.each do |k, v|
-  #     self.send(("#{k}="), v)
-  #   end
-  # end
+
+  def add_attributes(beach_details)
+    beach_details.each do |k, v|
+      self.send(("#{k}="), v)
+    end
+  end
 
   def self.all
     @@all
