@@ -92,27 +92,25 @@ class CLI
 
   def list_beach_details(beach_input)
     Scraper.scrape_beach_details(beach_input)
-    puts "Here is the additional information you requested for #{Beach.all[beach_input.to_i-1].name}:"
-      Beach.all.each do |beach, i|
+    puts "Here is the additional information you requested for #{Beach.all[beach_input.to_i-1].name}:".colorize(:cyan)
+      beach = Beach.all[beach_input.to_i-1]
         puts "  "
         puts "·÷±‡± #{beach.name} ±‡±÷·"
-        puts "-------------------------"
+        puts "  "
         puts "Swell Direction: #{beach.swell_direction}"
-        puts "Wind Direction: #{beach.wind}"
+        puts "Wind: #{beach.wind} at #{beach.wind_direction}"
         puts "Surf Height: #{beach.surf_height}"
         puts "Tide: #{beach.tide}"
         puts "Water Temperature: #{beach.water_temp}"
         puts "Outside Temperature: #{beach.outside_temp}"
         puts "........................."
         puts "Ideal Swell Direction: #{beach.ideal_swell_direction}"
-        puts "Ideal Wind Direction: #{beach.ideal_wind}"
+        puts "Ideal Wind: #{beach.ideal_wind}"
         puts "Ideal Surf Height: #{beach.ideal_surf_height}"
         puts "Ideal Tide: #{beach.ideal_tide}"
         puts "........................."
         puts "For more information about #{beach.name}, visit #{beach.url}."
         puts "  "
-      end
-    puts "  "
     surf_again?
   end
 
