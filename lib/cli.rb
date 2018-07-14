@@ -17,7 +17,7 @@ class CLI
   end
 
   def list_continents
-    continents = Scraper.scrape_continents
+    continents = Scraper.scrape_and_create_continents
     puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
@@ -40,7 +40,7 @@ class CLI
   end
 
   def list_countries(continent_input)
-    Scraper.scrape_countries(continent_input)
+    Scraper.scrape_and_create_countries(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     Country.all.each.with_index(1) {|country, i| puts "#{i}. #{country.name}"}
     puts "  "
@@ -66,9 +66,9 @@ class CLI
   end
 
   def list_beaches(country_input)
-    Scraper.scrape_beaches(country_input)
+    Scraper.scrape_and_create_beaches(country_input)
     puts "Select a beach below for more detailed information: (Enter number, go back, or exit)".colorize(:blue)
-    Beach.all.each.with_index(1) {|beach, i| puts "#{i}. #{beach.name}: #{beach.surf_height}"}
+    Beach.all.each.with_index(1) {|beach, i| puts "#{i}. #{beach.name}: #{beach.surf_height}" if beach.name != nil}
     puts "  "
     select_beach(country_input)
   end
@@ -79,6 +79,7 @@ class CLI
       puts "Catch you on the next wave!".colorize(:blue)
       exit
     elsif beach_input == "go back"
+      Country.clear_all
       Beach.clear_all
       list_continents
     elsif beach_input.to_i.between?(1, Beach.all.size)
@@ -91,7 +92,7 @@ class CLI
   end
 
   def list_beach_details(beach_input)
-    Scraper.scrape_beach_details(beach_input)
+    Scraper.scrape_and_add_beach_details(beach_input)
     puts "Here is the additional information you requested for #{Beach.all[beach_input.to_i-1].name}:".colorize(:cyan)
       beach = Beach.all[beach_input.to_i-1]
         puts "  "
@@ -120,6 +121,8 @@ class CLI
     if user_input == "yes"
       puts "Gnarly. Let's go again.".colorize(:cyan)
       puts "  "
+      Country.clear_all
+      Beach.clear_all
       list_continents
     elsif user_input == "no"
       puts "Catch you on the next wave!".colorize(:cyan)

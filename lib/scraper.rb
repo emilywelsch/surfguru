@@ -9,14 +9,14 @@ require_relative '../lib/cli.rb'
 
 class Scraper
 
-  def self.scrape_continents
+  def self.scrape_and_create_continents
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
     str = doc.search('div.quiver-world-taxonomy__continents').text.split /(?=[A-Z])/
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7]]
     continents.each {|continent| Continent.new(continent)}
   end
 
-  def self.scrape_countries(continent_input)
+  def self.scrape_and_create_countries(continent_input)
     countries = []
     country_urls = []
     x = 0
@@ -27,7 +27,7 @@ class Scraper
         doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
         countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
 
-        while x < 16 # Would be nice if nums weren't hardcoded but instead stopped at a nil return...
+        while x < 16 # If only nums weren't hardcoded but instead stopped at a nil return... sigh.
         country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href')
         x += 1
         end
@@ -78,27 +78,27 @@ class Scraper
         end
 
       else
-        puts "Something has gone terribly wrong."
+        puts "I'm just a surfer who wanted to build something that would allow me to surf longer. ~Jack O'Neill"
     end
     arr = countries.zip(country_urls)
     country_array = arr.map{|country, country_url| {name: country, url: country_url}}
     country_array.each {|country_hash| Country.new(country_hash)}
   end
 
-  def self.scrape_beaches(country_input)
+  def self.scrape_and_create_beaches(country_input)
     beaches = []
     doc = Nokogiri::HTML(open(Country.all[country_input.to_i-1].url))
     doc.css('div.sl-spot-list__ref').each do |beach|
       beach_details = {}
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
-      beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0) # nokogiri error message! because some of the beaches don't have a url
+      beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0)
       beaches << beach_details
     end
     beaches.each {|beach_hash| Beach.new(beach_hash)}
   end
 
-  def self.scrape_beach_details(beach_input)
+  def self.scrape_and_add_beach_details(beach_input)
     doc = Nokogiri::HTML(open(Beach.all[beach_input.to_i-1].url))
       beach_details = {}
 
@@ -131,7 +131,8 @@ class Scraper
       water_air_temp_array = doc.css('div.sl-wetsuit-recommender__weather').text.split /(?<=F)/
         beach_details[:water_temp] = water_air_temp_array[0]
         beach_details[:outside_temp] = water_air_temp_array[1]
-binding.pry
+
+      arr1 = doc.css('div.sl-ideal-conditions__condition__description').text.split /(Tide)/
         beach_details[:ideal_tide] = arr1[2]
       arr2 = arr1[0].split /(Surf Height)/
         beach_details[:ideal_surf_height] = arr2[2]
@@ -143,7 +144,6 @@ binding.pry
       beach_details
 
     Beach.all[beach_input.to_i-1].add_attributes(beach_details)
-
   end
 
 end
