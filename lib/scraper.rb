@@ -104,23 +104,23 @@ class Scraper
 
       wind_tide_array = doc.css('span.sl-reading').text.split /(?<=FT)/
       if wind_tide_array.length == 1
-        beach_details[:tide_height] = ["Tide height information not available."]
+        beach_details[:tide] = ["Not available for this spot"]
         beach_details[:wind] = wind_tide_array[0]
       elsif wind_tide_array.length == 2
-        beach_details[:tide_height] = wind_tide_array[0]
+        beach_details[:tide] = wind_tide_array[0]
         beach_details[:wind] = wind_tide_array[1]
       else
       end
 
       swells_array = doc.css('div.sl-spot-forecast-summary__stat-swells').text.split("Swells")
       if swells_array.length > 0
-        beach_details[:swells] = swells_array[1].split /(?<=º)/
-      else beach_details[:swells] = ["Swell information not available."]
+        beach_details[:swell_direction] = swells_array[1].split /(?<=º)/
+      else beach_details[:swell_direction] = ["Not available for this spot"]
       end
 
       water_air_temp_array = doc.css('div.sl-wetsuit-recommender__weather').text.split /(?<=F)/
         beach_details[:water_temp] = water_air_temp_array[0]
-        beach_details[:air_temp] = water_air_temp_array[1]
+        beach_details[:outside_temp] = water_air_temp_array[1]
 
       arr1 = doc.css('div.sl-ideal-conditions__condition__description').text.split /(Tide)/
         beach_details[:ideal_tide] = arr1[2]
@@ -131,9 +131,9 @@ class Scraper
       arr4 = arr3[0].split /(Swell Direction)/
         beach_details[:ideal_swell_direction] = arr4[2]
 
-      beaches << beach_details
-      beaches
-    end
+      beach_details
+
     Beach.all[beach_input.to_i-1].add_attributes(beach_details)
+  end
 
 end
