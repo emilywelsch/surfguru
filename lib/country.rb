@@ -5,9 +5,8 @@ class Country
   @@all = []
 
   def initialize(country_hash)
-    # delete_no_urls(country_hash) don't even initialize countries without urls
     country_hash.each do |key, value|
-      self.send("#{key}=", value)
+      self.send("#{key}=", value) if value.length > 0
     end
     @@all << self
   end
@@ -16,50 +15,8 @@ class Country
     @@all = []
   end
 
-  def delete_no_urls(country_hash)
-
-    @@all.reject! {|key, value| }
-  end
-
-  # def self.create_new(country_array)
-  #   country_array.each do |country_hash|
-  #     self.new(country_hash)
-  #   end
-  # end
-  #
-  # def add_attributes(details_hash)
-  #   details_hash.each do |k, v|
-  #     self.send(("#{k}="), v)
-  #   end
-  # end
-
   def self.all
     @@all
   end
-
-  # def continent_name
-  #   if self.continent
-  #     self.continent.name
-  #   else
-  #     nil
-  #   end
-  # end
-  #
-  # def add_beach(beach)
-  #   beach.country = self
-  # end
-  #
-  # def add_beach_by_name(name)
-  #   beach = Beach.new(name)
-  #   beach.country = self
-  # end
-  #
-  # def beaches
-  #   Beach.all.select {|beach| beach.country == self}
-  # end
-  #
-  # def self.beach_count
-  #   Beach.all.count
-  # end
 
 end
