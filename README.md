@@ -1,8 +1,14 @@
-# Surfguru
+# SurfGuru
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/surfguru`. To experiment with that code, run `bin/console` for an interactive prompt.
+![](https://drive.google.com/file/d/1SeIo4P6bVMAfsq874M9SJ-8Pw0co1U1K/view?usp=sharing)
 
-TODO: Delete this and the text above, and describe your gem
+SurfGuru helps you catch your next wave by providing a searchable listing of the current surf conditions at popular surfing beaches around the globe. Chase endless summer and ride the waves at any of the hundreds of surfing beaches on our app.
+
+SurfGuru lists beaches and their current surf heights by location, narrowing down by continent and country of choice. You can learn more about each beach in greater detail including water and air temperatures, swell directions, wind conditions, and ideal stats for each location right here in the SurfGuru app, or copy/paste the beach link in your browser!
+
+All content published by SurfGuru is the property of [Surfline/Wavetrak, Inc.](https://www.surfline.com/) and is protected by copyright, trademark, and other intellectual property laws.
+
+For more information on how to use the app, see my [video walkthrough](https://www.youtube.com/)!
 
 ## Installation
 
@@ -22,7 +28,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Type `surfguru` in the command line.
 
 ## Development
 
@@ -40,4 +46,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Surfguru project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/'emilywelsch'/surfguru/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the SurfGuru project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/'emilywelsch'/surfguru/blob/master/CODE_OF_CONDUCT.md).
