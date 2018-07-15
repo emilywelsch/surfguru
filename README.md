@@ -1,6 +1,6 @@
 # SurfGuru
 
-Chase endless summer and ride the waves at any of the hundreds of surfing beaches on our app.
+Chase endless summer and ride the waves at any one of the hundreds of surfing beaches on our app.
 
 ![surfguru1](https://user-images.githubusercontent.com/35111598/42729387-9e71490e-87a4-11e8-8d30-3250083e5b62.jpg)
 
