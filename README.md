@@ -1,10 +1,10 @@
 # SurfGuru
 
-![](https://drive.google.com/file/d/1SeIo4P6bVMAfsq874M9SJ-8Pw0co1U1K/view?usp=sharing)
+Chase endless summer and ride the waves at any of the hundreds of surfing beaches on our app.
 
-SurfGuru helps you catch your next wave by providing a searchable listing of the current surf conditions at popular surfing beaches around the globe. Chase endless summer and ride the waves at any of the hundreds of surfing beaches on our app.
+![surfguru1](https://user-images.githubusercontent.com/35111598/42729387-9e71490e-87a4-11e8-8d30-3250083e5b62.jpg)
 
-SurfGuru lists beaches and their current surf heights by location, narrowing down by continent and country of choice. You can learn more about each beach in greater detail including water and air temperatures, swell directions, wind conditions, and ideal stats for each location right here in the SurfGuru app, or copy/paste the beach link in your browser!
+SurfGuru helps you catch your next wave by providing a searchable listing of the current surf conditions at popular surfing beaches around the globe. SurfGuru lists beaches and their current surf heights by location, narrowing down by continent and country of choice. You can learn more about each beach in greater detail including water and air temperatures, swell directions, wind conditions, and ideal stats for each location right here in the SurfGuru app, or copy/paste the beach link in your browser!
 
 All content published by SurfGuru is the property of [Surfline/Wavetrak, Inc.](https://www.surfline.com/) and is protected by copyright, trademark, and other intellectual property laws.
 
