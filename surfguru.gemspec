@@ -9,22 +9,12 @@ Gem::Specification.new do |spec|
   spec.authors       = ["'Emily Welsch'"]
   spec.email         = ["'emwelsch@gmail.com'"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{A listing of surfing beaches around the world.}
+  spec.description   = %q{CLI data gem app that scrapes and returns a list of surfing beaches around the world, along with detailed
+                          information about the surf conditions at each location, from the Surfline webpage. http://www.surfline.com/}
+  spec.homepage      = "https://github.com/emilywelsch/surfguru.git"
   spec.license       = "MIT"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
-
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
@@ -38,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "nokogiri", ">= 0"
   spec.add_development_dependency "pry", ">= 0"
   spec.add_development_dependency "colorize", ">= 0"
+
 
 end
