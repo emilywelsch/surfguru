@@ -10,7 +10,7 @@ Get specific details including water and air temperatures, swell directions, win
 
 All content published by SurfGuru is the property of [Surfline/Wavetrak, Inc.](https://www.surfline.com/) and is protected by copyright, trademark, and other intellectual property laws.
 
-For more information on how to use the app, see my [video walkthrough](https://www.youtube.com/)!
+For more information on how to use the app, see my [video walkthrough](https://youtu.be/LVinCJ2QzOM)!
 
 ## Installation
 
