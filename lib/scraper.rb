@@ -1,11 +1,6 @@
-# require "surfguru/version"
-require 'nokogiri'
-require 'open-uri'
-require 'pry'
 require_relative '../lib/beach.rb'
 require_relative '../lib/country.rb'
 require_relative '../lib/continent.rb'
-require_relative '../lib/cli.rb'
 
 class Scraper
 
@@ -145,5 +140,4 @@ class Scraper
 
     Beach.all[beach_input.to_i-1].add_attributes(beach_details)
   end
-
 end
