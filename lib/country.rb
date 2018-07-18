@@ -18,5 +18,4 @@ class Country
   def self.all
     @@all
   end
-
 end
