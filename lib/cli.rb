@@ -1,11 +1,3 @@
-# require "surfguru/version"
-require 'nokogiri'
-require 'colorize'
-require_relative '../lib/beach.rb'
-require_relative '../lib/country.rb'
-require_relative '../lib/continent.rb'
-require_relative '../lib/scraper.rb'
-
 class CLI
 
   def surf

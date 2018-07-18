@@ -1,5 +1,3 @@
-# require "surfguru/version"
-
 class Continent
   attr_accessor :name
   @@all = []

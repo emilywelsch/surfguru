@@ -1,5 +1,3 @@
-# require "surfguru/version"
-
 class Country
   attr_accessor :name, :url, :continent
   @@all = []
