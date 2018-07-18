@@ -11,74 +11,96 @@ class Scraper
     continents.each {|continent| Continent.new(continent)}
   end
 
-  def self.scrape_and_create_countries(continent_input)
+  def self.scrape_and_create_countries
     countries = []
-    country_urls = []
-    x = 0
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
+    binding.pry
 
-    case continent_input
+    doc.search('div.quiver-world-taxonomy__countries').each do |country|
+      binding.pry
 
-      when "1"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 16 # If only nums weren't hardcoded but instead stopped at a nil return... sigh.
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href')
-        x += 1
-        end
-
-      when "2"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#asia"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[1].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 18
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[1].css('a')[x].attr('href')
-        x += 1
-        end
-
-      when "3"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#europe"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[2].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 21
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[2].css('a')[x].attr('href')
-        x += 1
-        end
-
-      when "4"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#north-america"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[3].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 24
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[3].css('a')[x].attr('href')
-        x += 1
-        end
-
-      when "5"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#oceania"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[4].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 11
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[4].css('a')[x].attr('href')
-        x += 1
-        end
-
-      when "6"
-        doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#south-america"))
-        countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
-
-        while x < 8
-        country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[5].css('a')[x].attr('href')
-        x += 1
-        end
-
-      else
-        puts "I'm just a surfer who wanted to build something that would allow me to surf longer. ~Jack O'Neill"
+      country_details = {}
+      country_details[:name] = country.css('a').text.split(" Surf Reports & Cams")
+      country_details[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
+      country_details[:continent] = "Africa" if country.search('h2#africa').text
+      country_details[:continent] = "Asia" if country.search('h2#asia').text
+      country_details[:continent] = "Europe" if country.search('h2#europe').text
+      country_details[:continent] = "North America" if country.search('h2#north-america').text
+      country_details[:continent] = "Oceania" if country.search('h2#oceania').text
+      country_details[:continent] = "South America" if country.search('h2#south-america').text
     end
-    arr = countries.zip(country_urls)
-    country_array = arr.map{|country, country_url| {name: country, url: country_url}}
-    country_array.each {|country_hash| Country.new(country_hash)}
+    countries.each {|country_hash| Country.new(country_hash)}
   end
+
+  # def self.scrape_and_create_countries(continent_input)
+  #   countries = []
+  #   country_urls = []
+  #   x = 0
+  #
+  #   case continent_input
+  #
+  #     when "1"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
+  #       binding.pry
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 16 # If only nums weren't hardcoded but instead stopped at a nil return... sigh.
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     when "2"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#asia"))
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[1].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 18
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[1].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     when "3"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#europe"))
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[2].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 21
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[2].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     when "4"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#north-america"))
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[3].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 24
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[3].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     when "5"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#oceania"))
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[4].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 11
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[4].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     when "6"
+  #       doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#south-america"))
+  #       countries = doc.search('div.quiver-world-taxonomy__countries')[5].css('a').text.split(" Surf Reports & Cams")
+  #
+  #       while x < 8
+  #       country_urls << "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[5].css('a')[x].attr('href')
+  #       x += 1
+  #       end
+  #
+  #     else
+  #       puts "I'm just a surfer who wanted to build something that would allow me to surf longer. ~Jack O'Neill"
+  #   end
+  #   arr = countries.zip(country_urls)
+  #   country_array = arr.map{|country, country_url| {name: country, url: country_url}}
+  #   country_array.each {|country_hash| Country.new(country_hash)}
+  # end
 
   def self.scrape_and_create_beaches(country_input)
     beaches = []
