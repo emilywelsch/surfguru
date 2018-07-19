@@ -48,9 +48,13 @@ class CLI
     if country_input.downcase == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif country_input.downcase == "go back" # retrieve objects already created rather than scrape again.
+    elsif country_input.downcase == "go back"
       Country.clear_all
-      list_continents
+      puts "  "
+      puts "Select Continent: (Enter number or exit)".colorize(:blue)
+      Continent.all.each.with_index(1) { |continent, i| puts "#{i}. #{continent.name}" }
+      puts "  "
+      select_continent
     elsif country_input.to_i.between?(1, Country.all.size)
       puts "Here's a list of some amazing surf spots in #{Country.all[country_input.to_i-1].name} with their current swell conditions.".colorize(:cyan)
       list_beaches(country_input)
@@ -74,10 +78,14 @@ class CLI
     if beach_input.downcase == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif beach_input.downcase == "go back" # retrieve objects already created rather than scrape again.
+    elsif beach_input.downcase == "go back"
       Country.clear_all
       Beach.clear_all
-      list_continents
+      puts "  "
+      puts "Select Continent: (Enter number or exit)".colorize(:blue)
+      Continent.all.each.with_index(1) { |continent, i| puts "#{i}. #{continent.name}" }
+      puts "  "
+      select_continent
     elsif beach_input.to_i.between?(1, Beach.all.size)
       list_beach_details(beach_input)
     else
