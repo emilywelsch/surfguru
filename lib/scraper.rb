@@ -5,6 +5,7 @@ require_relative '../lib/continent.rb'
 class Scraper
 
   def self.scrape_and_create_continents
+    puts "Scraping**********"
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
     str = doc.search('div.quiver-world-taxonomy__continents').text.split /(?=[A-Z])/
     continents = [str[0], str[1], str[2], str[3] << str[4], str[5], str[6] << str[7]]
@@ -45,7 +46,6 @@ class Scraper
 
       when "1"
         doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams#africa"))
-        binding.pry
         countries = doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
 
         while x < 16 # If only nums weren't hardcoded but instead stopped at a nil return... sigh.
@@ -114,9 +114,8 @@ class Scraper
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
       beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0)
-      beaches << beach_details
+      Beach.new(beach_details)
     end
-    beaches.each {|beach_hash| Beach.new(beach_hash)}
   end
 
   def self.scrape_and_add_beach_details(beach_input)
