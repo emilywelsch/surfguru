@@ -22,7 +22,7 @@ class CLI
 
   def select_continent
     continent_input = gets.chomp
-    if continent_input == "exit"
+    if continent_input.downcase == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
   elsif continent_input.to_i.between?(1, Continent.all.size)
@@ -45,10 +45,10 @@ class CLI
 
   def select_country(continent_input)
     country_input = gets.chomp
-    if country_input == "exit"
+    if country_input.downcase == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif country_input == "go back"
+    elsif country_input.downcase == "go back" # retrieve objects already created rather than scrape again.
       Country.clear_all
       list_continents
     elsif country_input.to_i.between?(1, Country.all.size)
@@ -71,10 +71,10 @@ class CLI
 
   def select_beach(country_input)
     beach_input = gets.chomp
-    if beach_input == "exit"
+    if beach_input.downcase == "exit"
       puts "Catch you on the next wave!".colorize(:blue)
       exit
-    elsif beach_input == "go back"
+    elsif beach_input.downcase == "go back" # retrieve objects already created rather than scrape again.
       Country.clear_all
       Beach.clear_all
       list_continents
@@ -94,6 +94,7 @@ class CLI
         puts "  "
         puts "·÷±‡± #{beach.name} ±‡±÷·"
         puts "  "
+        puts "Location: #{beach.country}, #{beach.continent}"
         puts "Swell Direction: #{beach.swell_direction}"
         puts "Wind: #{beach.wind} at #{beach.wind_direction}"
         puts "Surf Height: #{beach.surf_height}"
@@ -114,13 +115,13 @@ class CLI
   def surf_again?
     puts "Want to surf again? (Enter yes or no)".colorize(:blue)
     user_input = gets.chomp
-    if user_input == "yes"
+    if user_input.downcase == "yes"
       puts "Gnarly. Let's go again.".colorize(:cyan)
       puts "  "
       Country.clear_all
       Beach.clear_all
       list_continents
-    elsif user_input == "no"
+    elsif user_input.downcase == "no"
       puts "Catch you on the next wave!".colorize(:cyan)
       puts "  "
       exit

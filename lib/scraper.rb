@@ -114,6 +114,8 @@ class Scraper
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
       beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0)
+      # beach_details[:country] = Country.all[country_input.to_i-1].country
+      # beach_details[:continent] = Country.all[country_input.to_i-1].continent
       Beach.new(beach_details)
     end
   end
