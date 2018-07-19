@@ -9,11 +9,12 @@ class CLI
   end
 
   def list_continents
-    if Continent.all.length < 1
-      continents = Scraper.scrape_and_create_continents
-    else
-      continents = Continent.all.map {|continent| continent.name}
-    end
+    # if Continent.all.length < 1
+    #   continents = Scraper.scrape_and_create_continents
+    # else
+    #   continents = Continent.all.map {|continent| continent.name}
+    # end
+    continents = Scraper.scrape_and_create_continents
     puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
@@ -36,8 +37,10 @@ class CLI
   end
 
   def list_countries(continent_input)
-    Scraper.scrape_and_create_countries(continent_input)
+    puts "Scraping********"
+    Scraper.scrape_and_create_countries
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
+binding.pry
     Country.all.each.with_index(1) {|country, i| puts "#{i}. #{country.name}"} #for refractoring, add "if country.continent == desired value"
     puts "  "
     select_country(continent_input)

@@ -12,24 +12,49 @@ class Scraper
   end
 
   def self.scrape_and_create_countries
-
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
-      country_details = {}
 
-      doc.search('div.quiver-world-taxonomy__continent').each do |continent|
-        country_details[:continent] = continent.css('h2').text.split(" Surf Reports & Cams")[0]
-
-        doc.search('div.quiver-world-taxonomy__countries').each do |country|
-          country_details[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
-
-          arr = country.css('a').attr('href').value.split("surf-reports-forecasts-cams/")
-          arr1 = arr[1].split /\/.*$/
-          arr2 = arr1[0].gsub("-"," ").split
-          arr2.each {|word| word.capitalize!}
-          country_details[:name] = arr2.join(" ")
-          Country.new(country_details)
-        end
+    x = 0
+    while x < 6
+      arr = doc.search('div.quiver-world-taxonomy__countries')[x].css('a').text.split(" Surf Reports & Cams")
+      arr.each do |country|
+        country_details = {}
+        country_details[:name] = country
+        country_details[:continent] = Continent.all[x].name
+        Country.new(country_details)
       end
+      x += 1
+    end
+
+    doc.search('div.quiver-world-taxonomy__countries').each do |country|
+      country_urls = {}
+      country_urls[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
+    end
+    country_urls
+    binding.pry
+    Country.all.zip(country_urls)
+
+
+      # doc.search('div.quiver-world-taxonomy__continent').each do |continent|
+      #   # binding.pry
+      #   country_details[:continent] = continent.css('h2').text.split(" Surf Reports & Cams")
+      #
+      #   doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
+      # end
+
+      # doc.search('div.quiver-world-taxonomy__countries').each do |country|
+      #   # binding.pry
+      #   country_details[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
+      #
+      #   arr = country.css('a').attr('href').value.split("surf-reports-forecasts-cams/")
+      #   arr1 = arr[1].split /\/.*$/
+      #   arr2 = arr1[0].gsub("-"," ").split
+      #   arr2.each {|word| word.capitalize!}
+      #   country_details[:name] = arr2.join(" ")
+      #   Country.new(country_details)
+      # end
+      # Country.new(country_details)
+# binding.pry
   end
 
   def self.scrape_and_create_beaches(country_input)
