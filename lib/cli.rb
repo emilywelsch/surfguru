@@ -9,7 +9,11 @@ class CLI
   end
 
   def list_continents
-    continents = Scraper.scrape_and_create_continents
+    if Continent.all.length < 1
+      continents = Scraper.scrape_and_create_continents
+    else
+      continents = Continent.all.map {|continent| continent.name}
+    end
     puts "Select Continent: (Enter number or exit)".colorize(:blue)
     continents.each.with_index(1) { |continent, i| puts "#{i}. #{continent}" }
     puts "  "
