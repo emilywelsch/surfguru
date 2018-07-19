@@ -23,7 +23,7 @@ class CLI
       exit
   elsif continent_input.to_i.between?(1, Continent.all.size)
       puts "Nice choice! There are lots of great surf spots in #{Continent.all[continent_input.to_i-1].name}.".colorize(:cyan)
-      list_countries#(continent_input)
+      list_countries(continent_input)
     else
       puts "Invalid entry. Please try again.".colorize(:red)
       puts "  "
@@ -31,12 +31,12 @@ class CLI
     end
   end
 
-  def list_countries#(continent_input)
-    # Scraper.scrape_and_create_countries(continent_input)
-    Scraper.scrape_and_create_countries
+  def list_countries(continent_input)
+    Scraper.scrape_and_create_countries(continent_input)
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
     Country.all.each.with_index(1) {|country, i| puts "#{i}. #{country.name}"}
     puts "  "
+    puts "refactoring worked!"
     # select_country(continent_input)
   end
 

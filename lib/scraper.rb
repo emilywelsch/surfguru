@@ -11,24 +11,35 @@ class Scraper
     continents.each {|continent| Continent.new(continent)}
   end
 
-  def self.scrape_and_create_countries
+  def self.scrape_and_create_countries(continent_input)
     countries = []
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
-    binding.pry
+    continent_name = Continent.all[continent_input.to_i].name
+    continent_slug = "#" + continent_name.downcase
+    # heading_continent_name = "h2#" + continent_name.downcase
 
-    doc.search('div.quiver-world-taxonomy__countries').each do |country|
-      binding.pry
-
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams" + continent_slug)) 
+  # binding.pry
+    # doc.search("#{heading_continent_name}.quiver-world-taxonomy__container").each do |container|
+  # binding.pry
+      doc.search('div.quiver-world-taxonomy__countries').each do |country|
+  # binding.pry
       country_details = {}
-      country_details[:name] = country.css('a').text.split(" Surf Reports & Cams")
+      country_array = []
+      country_array = country.css('a').text.split(" Surf Reports & Cams")
       country_details[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
-      country_details[:continent] = "Africa" if country.search('h2#africa').text
-      country_details[:continent] = "Asia" if country.search('h2#asia').text
-      country_details[:continent] = "Europe" if country.search('h2#europe').text
-      country_details[:continent] = "North America" if country.search('h2#north-america').text
-      country_details[:continent] = "Oceania" if country.search('h2#oceania').text
-      country_details[:continent] = "South America" if country.search('h2#south-america').text
-    end
+      country_details[:continent] = continent_name
+      binding.pry
+      country_details[:name] = country_array.first
+
+      countries << country_details.zip(country_array)
+
+      end
+      # country_details[:name] = country_array.each {|name, country| Country.send(("#{name}="), country)}
+
+      # country_array.each do |name, country|
+      #     self.send(("#{name}="), country)
+      #   end
+    # end
     countries.each {|country_hash| Country.new(country_hash)}
   end
 
