@@ -44,6 +44,20 @@ class Scraper
     end
   end
 
+  def self.scrape_country_urls
+    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
+    x = 0
+    y = 0
+    while x < 6
+      country_urls = {}
+      country_urls[:url] = "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[x].css('a')[y].attr('href')
+
+      case continent
+        
+      # "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[0].css('a')[0].attr('href')
+    end
+  end
+
   def self.scrape_and_create_beaches(country_input)
     beaches = []
     doc = Nokogiri::HTML(open(Country.all[country_input.to_i-1].url))
