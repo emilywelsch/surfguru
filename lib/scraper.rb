@@ -28,33 +28,20 @@ class Scraper
 
     doc.search('div.quiver-world-taxonomy__countries').each do |country|
       country_urls = {}
-      country_urls[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
+      country_urls[:url] = "https://www.surfline.com/" + country.css('a').attr('href') #this isn't scraping all urls
+
+      arr = country.css('a').attr('href').value.split("surf-reports-forecasts-cams/")
+      arr1 = arr[1].split /\/.*$/
+      arr2 = arr1[0].gsub("-"," ").split
+      arr2.each {|word| word.capitalize!}
+      country_urls[:name] = arr2.join(" ")
+
+      Country.all.each do |country_object|
+        if country_urls[:name] == country_object.name
+          country_object.send(("#{:url}="), country_urls[:url])
+        end
+      end
     end
-    country_urls
-    binding.pry
-    Country.all.zip(country_urls)
-
-
-      # doc.search('div.quiver-world-taxonomy__continent').each do |continent|
-      #   # binding.pry
-      #   country_details[:continent] = continent.css('h2').text.split(" Surf Reports & Cams")
-      #
-      #   doc.search('div.quiver-world-taxonomy__countries')[0].css('a').text.split(" Surf Reports & Cams")
-      # end
-
-      # doc.search('div.quiver-world-taxonomy__countries').each do |country|
-      #   # binding.pry
-      #   country_details[:url] = "https://www.surfline.com/" + country.css('a').attr('href')
-      #
-      #   arr = country.css('a').attr('href').value.split("surf-reports-forecasts-cams/")
-      #   arr1 = arr[1].split /\/.*$/
-      #   arr2 = arr1[0].gsub("-"," ").split
-      #   arr2.each {|word| word.capitalize!}
-      #   country_details[:name] = arr2.join(" ")
-      #   Country.new(country_details)
-      # end
-      # Country.new(country_details)
-# binding.pry
   end
 
   def self.scrape_and_create_beaches(country_input)
