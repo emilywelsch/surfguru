@@ -14,6 +14,8 @@ For more information on how to use the app, see my [video walkthrough](https://y
 
 ## Installation
 
+While SurfGuru is technically a gem, it will not be published on RubyGems.org until we recieve publishing permission from Surfline. In the meantime, please feel free to clone the repository and run the executable file with the following prompts.
+
 Add this line to your terminal to clone the repository:
 
 ```ruby
