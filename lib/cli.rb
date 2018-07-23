@@ -39,7 +39,7 @@ class CLI
   def list_countries(continent_input)
     Scraper.scrape_and_create_countries
     puts "Select Country: (Enter number, go back, or exit)".colorize(:blue)
-    countries =Country.all.select {|x| x.continent_input.to_i+1 == continent_input.to_i}
+    countries = Country.all.select {|x| x.continent_input.to_i+1 == continent_input.to_i}
     countries.each.with_index {|country, i| puts "#{i}. #{country.name}"}
     puts "  "
     select_country(continent_input)
