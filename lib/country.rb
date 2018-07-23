@@ -1,5 +1,5 @@
 class Country
-  attr_accessor :name, :url, :continent
+  attr_accessor :name, :url, :continent, :continent_input
   @@all = []
 
   def initialize(country_hash)
