@@ -21,16 +21,18 @@ class Scraper
         country_details = {}
         country_details[:name] = country
         country_details[:continent] = Continent.all[x].name
+        country_details[:continent_input] = x.to_s
         Country.new(country_details)
       end
       x += 1
     end
 
-    doc.search('div.quiver-world-taxonomy__countries').each do |country|
+    doc.search('div.quiver-world-taxonomy__countries').css('a').each do |country|
       country_urls = {}
-      country_urls[:url] = "https://www.surfline.com/" + country.css('a').attr('href') #this isn't scraping all urls
+      url = country.attr('href')
+      country_urls[:url] = "https://www.surfline.com/" + url
 
-      arr = country.css('a').attr('href').value.split("surf-reports-forecasts-cams/")
+      arr = url.split("surf-reports-forecasts-cams/")
       arr1 = arr[1].split /\/.*$/
       arr2 = arr1[0].gsub("-"," ").split
       arr2.each {|word| word.capitalize!}
@@ -41,44 +43,6 @@ class Scraper
           country_object.send(("#{:url}="), country_urls[:url])
         end
       end
-    end
-  end
-
-  def self.scrape_country_urls
-    doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
-    x = 0
-    y = 0
-    while x < 5
-      country_details = {}
-      country_details[:url] = "https://www.surfline.com/" + doc.search('div.quiver-world-taxonomy__countries')[x].css('a')[y].attr('href')
-
-      arr = doc.search('div.quiver-world-taxonomy__countries')[x].css('a')[y].attr('href').value.split("surf-reports-forecasts-cams/")
-      arr1 = arr[1].split /\/.*$/
-      arr2 = arr1[0].gsub("-"," ").split
-      arr2.each {|word| word.capitalize!}
-      country_urls[:name] = arr2.join(" ")
-
-      case x
-      when x == 0
-        country_details[:continent] = "Africa"
-      when x == 1
-        country_details[:continent] = "Asia"
-      when x == 2
-        country_details[:continent] = "Europe"
-      when x == 3
-        country_details[:continent] = "North America"
-      when x == 4
-        country_details[:continent] = "Oceania"
-      when x == 5
-        country_details[:continent] = "South America"
-      else x < 5
-        break
-      end
-
-      y += 1
-
-      # Can I do each for the y variable inside a loop?
-
     end
   end
 
