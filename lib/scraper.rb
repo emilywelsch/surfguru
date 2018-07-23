@@ -56,7 +56,7 @@ class Scraper
       beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0)
       beach_details[:country] = Country.all[country_input.to_i-1].name
       beach_details[:continent] = Country.all[country_input.to_i-1].continent
-      Beach.new(beach_details)
+      Beach.new(beach_details) if beach_details[:url] != nil
     end
   end
 
