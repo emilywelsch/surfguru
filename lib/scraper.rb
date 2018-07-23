@@ -11,21 +11,21 @@ class Scraper
     continents.each {|continent| Continent.new(continent)}
   end
 
-  def self.scrape_and_create_countries
+  def self.scrape_and_create_countries(continent_input)
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
 
-    x = 0
-    while x < 6
-      arr = doc.search('div.quiver-world-taxonomy__countries')[x].css('a').text.split(" Surf Reports & Cams")
+    # x = 0
+    # while x < 6
+      arr = doc.search('div.quiver-world-taxonomy__countries')[continent_input.to_i-1].css('a').text.split(" Surf Reports & Cams")
       arr.each do |country|
         country_details = {}
         country_details[:name] = country
-        country_details[:continent] = Continent.all[x].name
-        country_details[:continent_input] = x.to_s
+        country_details[:continent] = Continent.all[continent_input.to_i-1].name
+        country_details[:continent_input] = continent_input
         Country.new(country_details)
       end
-      x += 1
-    end
+    #   x += 1
+    # end
 
     doc.search('div.quiver-world-taxonomy__countries').css('a').each do |country|
       country_urls = {}
@@ -54,8 +54,8 @@ class Scraper
       beach_details[:name] = beach.css('h3.sl-spot-details__name').text
       beach_details[:surf_height] = beach.css('span.quiver-surf-height').text
       beach_details[:url] = "https://www.surfline.com" + beach.css('a')[0].attribute('href').value if(beach.css('a').length > 0)
-      # beach_details[:country] = Country.all[country_input.to_i-1].country
-      # beach_details[:continent] = Country.all[country_input.to_i-1].continent
+      beach_details[:country] = Country.all[country_input.to_i-1].name
+      beach_details[:continent] = Country.all[country_input.to_i-1].continent
       Beach.new(beach_details)
     end
   end
