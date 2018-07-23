@@ -14,19 +14,24 @@ For more information on how to use the app, see my [video walkthrough](https://y
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your terminal to clone the repository:
 
 ```ruby
-gem 'surfguru'
+♥ git clone https://github.com/emilywelsch/surfguru.git
 ```
 
-And then execute:
+Move into the surfguru directory:
 
-    $ bundle
+    ♥ cd surfguru/
 
-Or install it yourself as:
+Install the files:
 
-    $ gem install surfguru
+    ♥ rake install
+    
+And run the program:
+
+    ♥ surfuru
+    
 
 ## Usage
 
