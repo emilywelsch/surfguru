@@ -14,18 +14,14 @@ class Scraper
   def self.scrape_and_create_countries(continent_input)
     doc = Nokogiri::HTML(open("https://www.surfline.com/surf-reports-forecasts-cams"))
 
-    # x = 0
-    # while x < 6
-      arr = doc.search('div.quiver-world-taxonomy__countries')[continent_input.to_i-1].css('a').text.split(" Surf Reports & Cams")
-      arr.each do |country|
-        country_details = {}
-        country_details[:name] = country
-        country_details[:continent] = Continent.all[continent_input.to_i-1].name
-        country_details[:continent_input] = continent_input
-        Country.new(country_details)
-      end
-    #   x += 1
-    # end
+    arr = doc.search('div.quiver-world-taxonomy__countries')[continent_input.to_i-1].css('a').text.split(" Surf Reports & Cams")
+    arr.each do |country|
+      country_details = {}
+      country_details[:name] = country
+      country_details[:continent] = Continent.all[continent_input.to_i-1].name
+      country_details[:continent_input] = continent_input
+      Country.new(country_details)
+    end
 
     doc.search('div.quiver-world-taxonomy__countries').css('a').each do |country|
       country_urls = {}
